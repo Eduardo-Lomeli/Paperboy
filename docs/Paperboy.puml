@@ -1,0 +1,47 @@
+@startuml Paperboy
+
+class Jugador
+class Juego
+
+class Paperboy
+class Habilidad
+class Velocidad
+class Lanzar
+class TocarObstaculo
+
+
+
+class Obstaculo
+class Nivel
+class Calle
+class Buzon
+class Persona
+class Alcantarilla
+class Ventana
+class Perro
+class Agua
+class Casa
+
+class Item
+class Periodico
+
+
+Juego "1" *-- "1" Jugador
+Jugador "1" o-- "1" Paperboy
+Paperboy "1" *-- "*" Periodico
+Lanzar --|> Habilidad
+
+Nivel "1" *-- "1" Calle
+Calle "1" *-- "*" Buzon
+Calle "1" *-- "*" Alcantarilla
+Calle "1" *-- "*" Casa
+Calle "1" *-- "*" Perro
+Casa "1" *-- "2" Ventana
+
+
+
+
+
+
+
+@enduml
