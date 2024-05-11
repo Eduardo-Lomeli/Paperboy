@@ -19,27 +19,40 @@ class Persona
 class Alcantarilla
 class Ventana
 class Perro
-class Agua
+class Charco
 class Casa
 
 class Item
 class Periodico
 
-
+Persona o-- Juego
 Juego "1" *-- "1" Jugador
 Jugador "1" o-- "1" Paperboy
 Paperboy "1" *-- "*" Periodico
-Lanzar --|> Habilidad
+Jugador "1" *-- "2" Habilidad
+Juego "1" *-- "*" Nivel
+Paperboy "1" o-- "*" TocarObstaculo
+
+
+Habilidad <|-- Lanzar
+Habilidad <|-- Velocidad
+
 
 Nivel "1" *-- "1" Calle
 Calle "1" *-- "*" Buzon
 Calle "1" *-- "*" Alcantarilla
 Calle "1" *-- "*" Casa
 Calle "1" *-- "*" Perro
+Calle "1" *-- "*" Charco
 Casa "1" *-- "2" Ventana
 
+Obstaculo <|-- Alcantarilla
+Obstaculo <|-- Perro
+Obstaculo <|-- Charco
+TocarObstaculo o-- Obstaculo
 
-
+Item <|-- Periodico
+Lanzar o-- Periodico
 
 
 
