@@ -8,6 +8,9 @@ class Habilidad
 class Velocidad
 class Lanzar
 class TocarObstaculo
+class Puntos
+class Vida
+class Muerte
 
 
 
