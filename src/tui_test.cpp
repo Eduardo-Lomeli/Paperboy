@@ -31,25 +31,24 @@ int main(int argc, char const *argv[])
     int posX = 0;
     int posY = 6;
 
-    while (true) 
-   
+    while (true)
 
     {
         fotograma++;
 
-        Element personaje = spinner(21,fotograma);
-        Element cuadro = hbox({personaje});
+       // Element personaje = spinner(21,fotograma);
+       // Element cuadro = hbox({personaje});
 
         Decorator colorFondo = bgcolor(Color::Black);
         Decorator colorTexto = color(Color::White);
     
-        Element dibujo = border({hbox(personaje) | colorFondo | colorTexto});
+       // Element dibujo = border({hbox(personaje) | colorFondo | colorTexto});
 
         Dimensions Alto = Dimension::Full();
         Dimensions Ancho = Dimension::Full();
 
         Screen pantalla = Screen::Create(Ancho,Alto);
-        Render(pantalla,dibujo);
+        //Render(pantalla,dibujo);
 
         int l = 0;
         for (auto &&texto: textos)
@@ -62,7 +61,7 @@ int main(int argc, char const *argv[])
             }
 
             l++;
-        }   
+        }
 
         posX++;
         
