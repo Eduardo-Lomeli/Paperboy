@@ -1,21 +1,35 @@
-#pragma once
-#include<SFML/Graphics.hpp>
+#ifndef PAPERBOY_HPP
+#define PAPERBOY_HPP
 
-class Paperboy: public sf::Drawable
+#include <SFML/Graphics.hpp>
+
+class Paperboy : public sf::Drawable
 {
+public:
+    Paperboy(sf::Vector2f position);
+
+    void update();
+    void animacion();
+
 private:
-    sf::Sprite _sprite;
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
     sf::Texture _texture;
-    sf::Clock _clock;
-    float _velocidad;
-    float frametime ;
+    sf::Sprite _sprite;
+    sf::Texture _backgroundTexture;
+    sf::Sprite _backgroundSprite;
+    sf::Sprite _backgroundSprite2;
+
+    int _velocidad;
+    float frametime;
     int currentFrame;
     int numFrames;
     int frameWidth;
     int frameHeight;
-public:
-    Paperboy(sf::Vector2f position);
-    void update();
-    void animacion();
-    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+    sf::Clock _clock;
+
+    const int windowWidth = 800;
+    const int windowHeight = 600;
 };
+
+#endif // PAPERBOY_HPP
