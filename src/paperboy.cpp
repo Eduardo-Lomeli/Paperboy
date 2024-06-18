@@ -1,101 +1,80 @@
 #include <SFML/Graphics.hpp>
+#include "../include/Paperboy.hpp"
 
-class Personaje
+Paperboy::Paperboy(sf::Vector2f position)
 {
-public:
-    Personaje(sf::Vector2f position, sf::Color color)
-    {
-        shape.setSize(sf::Vector2f(50, 50));
-        shape.setPosition(position); // Posición inicial cuadro
-        shape.setFillColor(color);
-
-        // Cargar la imagen desde un archivo
-        
-        if (!texture.loadFromFile("assets/images/Personaje.png"))
-        {
-        
-        }
-        this->sprite = sf::Sprite(texture);
-        this->sprite.setPosition(position); // Posición inicial sprite
-    }
-
-    void move(float offsetX, float offsetY)
-    {
-        sprite.move(offsetX, offsetY);
-        shape.move(offsetX, offsetY);
-    }
-
-    void draw(sf::RenderWindow &window)
-    {
-        window.draw(this->shape);
-        window.draw(this->sprite);
-    }
-
-    void update(){
-        // Actualizar el frame de la animación
-        if (clock.getElapsedTime().asSeconds() >= frameTime)
-        {
-            currentFrame = (currentFrame + 3) % numFrames;
-            sprite.setTextureRect(sf::IntRect((currentFrame * 64)+17, 45, 64, 36));
-            clock.restart();
-        }
-    }
-
-private:
-    sf::RectangleShape shape;
-    sf::Sprite sprite;
-    sf::Texture texture;
-    sf::Clock clock;
-    float frameTime = 0.2f; // Tiempo entre cada frame en segundos
-    int currentFrame = 0;
-    int numFrames = 4; // Número total de frames en la animación
-    int frameWidth = 32;
-    int frameHeight = 32;
-};
-
-double velocidad = 0.1;
-
-int main()
-{
-    sf::RenderWindow window(sf::VideoMode(800, 600), "DinoChrome");
-
-    Personaje pika(sf::Vector2f(600, 300), sf::Color::Red);
-
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-            {
-                window.close();
-            }
-        }
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        {
-            pika.move(velocidad * -1, 0);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        {
-            pika.move(velocidad, 0);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        {
-            pika.move(0, velocidad * -1);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        {
-            pika.move(0, velocidad);
-        }
-
-        // Actualizar animacion pikachu
-        pika.update();
-
-        window.clear();
-        pika.draw(window);
-        window.display();
-    }
-
-    return 0;
+    
+    _velocidad = 4;
+    frametime = 0.1f;
+    currentFrame = 0;
+    numFrames = 9;
+    frameWidth = 26;
+    frameHeight = 40;
+   if (!_texture.loadFromFile("assets/images/paperboy.png"))
+   {
+       
+   }
+   this->_sprite.setTexture(_texture);
+   this->_sprite.scale(4,4);
+   this->_sprite.setPosition(position);
+   
 }
+
+
+void Paperboy::update()
+{
+    //movimiento Paperboy
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    {
+        _sprite.move(0, -_velocidad);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    {
+        _sprite.move(-_velocidad, 0);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    {
+        _sprite.move(0, _velocidad);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
+        _sprite.move(_velocidad, 0);
+    }
+
+    //Condiciones para que no se salga de la pantalla
+
+    if (_sprite.getPosition().x < 0)
+    {
+        _sprite.setPosition(0, _sprite.getPosition().y);
+    }
+     if (_sprite.getPosition().y < 0)
+    {
+        _sprite.setPosition(_sprite.getPosition().x, 0);
+    }
+     if (_sprite.getPosition().x + _sprite.getGlobalBounds().width > 800)
+    {
+        _sprite.setPosition(800 - _sprite.getGlobalBounds().width, _sprite.getPosition().y);
+    }
+     if (_sprite.getPosition().y + _sprite.getGlobalBounds().height > 600)
+    {
+        _sprite.setPosition(_sprite.getPosition().x,600 - _sprite.getGlobalBounds().height);
+    }
+
+    }
+
+    void Paperboy::animacion()
+    {
+        if(_clock.getElapsedTime().asSeconds() >= frametime)
+        {
+            currentFrame = (currentFrame + 1) % numFrames;
+            _sprite.setTextureRect(sf::IntRect((currentFrame * 26), 0, 26, 40));
+            _clock.restart();
+        } 
+    }
+
+
+     void Paperboy::draw(sf::RenderTarget& target, sf::RenderStates states) const
+    {
+        target.draw(_sprite, states);
+    }
+
