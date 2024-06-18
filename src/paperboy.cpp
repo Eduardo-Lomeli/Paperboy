@@ -57,17 +57,17 @@ void Paperboy::update()
     }
 
     // Condiciones para que no se salga de la pantalla
-    if (_sprite.getPosition().x < 0)
+    if (_sprite.getPosition().x < 190)
     {
-        _sprite.setPosition(0, _sprite.getPosition().y);
+        _sprite.setPosition(190, _sprite.getPosition().y);
     }
     if (_sprite.getPosition().y < 0)
     {
         _sprite.setPosition(_sprite.getPosition().x, 0);
     }
-    if (_sprite.getPosition().x + _sprite.getGlobalBounds().width > windowWidth)
+    if (_sprite.getPosition().x + _sprite.getGlobalBounds().width > 600)
     {
-        _sprite.setPosition(windowWidth - _sprite.getGlobalBounds().width, _sprite.getPosition().y);
+        _sprite.setPosition(600 - _sprite.getGlobalBounds().width, _sprite.getPosition().y);
     }
     if (_sprite.getPosition().y + _sprite.getGlobalBounds().height > windowHeight)
     {
