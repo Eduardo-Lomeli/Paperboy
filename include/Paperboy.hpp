@@ -32,4 +32,4 @@ private:
     const int windowHeight = 600;
 };
 
-#endif // PAPERBOY_HPP
+#endif
