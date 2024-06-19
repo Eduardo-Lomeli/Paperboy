@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <ctime> // Para usar time()
+#include "Periodico.hpp"
 
 class Paperboy : public sf::Drawable
 {
@@ -24,9 +26,6 @@ private:
     std::vector<sf::Texture> _obstacleTextures;
     std::vector<sf::Sprite> _obstacleSprites;
 
-    std::vector<sf::Time> _obstacleTimers;
-    std::vector<sf::Clock> _obstacleClocks;
-
     int _velocidad;
     float frametime;
     int currentFrame;
@@ -39,5 +38,13 @@ private:
     const int windowHeight = 600;
 
     float _obstacleSpeed;
+
+    Periodico _periodico; // Agregar la instancia de Periodico como miembro de Paperboy
+
+    void spawnObstacles(); // Método para spawnear obstáculos al inicio
+    void spawnPeriodico(); // Método para spawnear un periódico
+    sf::Clock _periodicoClock; // Reloj para controlar el tiempo de aparición del periódico
+    float _periodicoCooldown; // Tiempo de enfriamiento para el periódico
 };
+
 #endif // PAPERBOY_HPP
