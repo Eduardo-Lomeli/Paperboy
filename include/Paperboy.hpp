@@ -2,6 +2,7 @@
 #define PAPERBOY_HPP
 
 #include <SFML/Graphics.hpp>
+#include <vector>
 
 class Paperboy : public sf::Drawable
 {
@@ -20,6 +21,12 @@ private:
     sf::Sprite _backgroundSprite;
     sf::Sprite _backgroundSprite2;
 
+    std::vector<sf::Texture> _obstacleTextures;
+    std::vector<sf::Sprite> _obstacleSprites;
+
+    std::vector<sf::Time> _obstacleTimers;
+    std::vector<sf::Clock> _obstacleClocks;
+
     int _velocidad;
     float frametime;
     int currentFrame;
@@ -30,6 +37,9 @@ private:
 
     const int windowWidth = 800;
     const int windowHeight = 600;
+
+    float _obstacleSpeed;
 };
 
 #endif // PAPERBOY_HPP
+

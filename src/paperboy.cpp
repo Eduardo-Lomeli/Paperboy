@@ -9,6 +9,7 @@ Paperboy::Paperboy(sf::Vector2f position)
     numFrames = 9;
     frameWidth = 26;
     frameHeight = 40;
+    _obstacleSpeed = 2.0f;
 
     if (!_texture.loadFromFile("assets/images/paperboy.png"))
     {
@@ -34,6 +35,38 @@ Paperboy::Paperboy(sf::Vector2f position)
 
     _backgroundSprite.setPosition(0, 0);
     _backgroundSprite2.setPosition(0, -windowHeight);
+
+    // Cargar texturas de obstáculos
+    sf::Texture obstacleTexture1;
+    if (!obstacleTexture1.loadFromFile("assets/images/obstacle1.png"))
+    {
+        // Manejar error de carga
+    }
+    _obstacleTextures.push_back(obstacleTexture1);
+
+    sf::Texture obstacleTexture2;
+    if (!obstacleTexture2.loadFromFile("assets/images/obstacle2.png"))
+    {
+        // Manejar error de carga
+    }
+    _obstacleTextures.push_back(obstacleTexture2);
+
+    // Crear sprites para los obstáculos y ajustar la escala
+    for (const auto& texture : _obstacleTextures)
+    {
+        sf::Sprite obstacleSprite;
+        obstacleSprite.setTexture(texture);
+        obstacleSprite.setScale(0.1f, 0.1f); // Ajustar la escala para que sea más pequeño
+        obstacleSprite.setPosition(static_cast<float>(rand() % (550 - 180 + 1) + 180), static_cast<float>(rand() % windowHeight));
+        _obstacleSprites.push_back(obstacleSprite);
+    }
+
+    // Inicializar tiempos de reubicación para los obstáculos y sus relojes
+    for (size_t i = 0; i < _obstacleSprites.size(); ++i)
+    {
+        _obstacleTimers.push_back(sf::seconds(static_cast<float>(i + 1) * 2.0f)); // 2 segundos de diferencia entre cada obstáculo
+        _obstacleClocks.push_back(sf::Clock());
+    }
 }
 
 void Paperboy::update()
@@ -88,6 +121,23 @@ void Paperboy::update()
     {
         _backgroundSprite2.setPosition(0, -windowHeight);
     }
+
+    // Movimiento de los obstáculos
+    for (size_t i = 0; i < _obstacleSprites.size(); ++i)
+    {
+        auto& obstacleSprite = _obstacleSprites[i];
+        obstacleSprite.move(0, _obstacleSpeed);
+
+        // Reaparecer el obstáculo cuando salga de la pantalla
+        if (obstacleSprite.getPosition().y >= windowHeight)
+        {
+            if (_obstacleClocks[i].getElapsedTime() >= _obstacleTimers[i])
+            {
+                obstacleSprite.setPosition(static_cast<float>(rand() % (550 - 180 + 1) + 180), 0);
+                _obstacleClocks[i].restart();
+            }
+        }
+    }
 }
 
 void Paperboy::animacion()
@@ -105,4 +155,10 @@ void Paperboy::draw(sf::RenderTarget& target, sf::RenderStates states) const
     target.draw(_backgroundSprite, states);
     target.draw(_backgroundSprite2, states);
     target.draw(_sprite, states);
+
+    // Dibujar los obstáculos
+    for (const auto& obstacleSprite : _obstacleSprites)
+    {
+        target.draw(obstacleSprite, states);
+    }
 }
