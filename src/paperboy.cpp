@@ -158,7 +158,10 @@ void Paperboy::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
     // Dibujar los obstáculos
     for (const auto& obstacleSprite : _obstacleSprites)
+
     {
         target.draw(obstacleSprite, states);
     }
 }
+
+#endif // PAPERBOY_HPP

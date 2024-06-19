@@ -40,6 +40,3 @@ private:
 
     float _obstacleSpeed;
 };
-
-#endif // PAPERBOY_HPP
-

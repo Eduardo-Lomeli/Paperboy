@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "Paperboy.hpp" 
+#include "Sonido.hpp"
 void ventana()
 {
 //inicializacion de la ventana
@@ -7,6 +8,9 @@ void ventana()
     window.setFramerateLimit(60);
 
     Paperboy paperboy(sf::Vector2f(400,300));
+    Sonido sonido;
+
+    sonido.cargarMusicaFondo();
 
     while (window.isOpen())
     {

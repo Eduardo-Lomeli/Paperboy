@@ -13,7 +13,7 @@ class Vida
 class Muerte
 
 
-
+class Sonido
 class Obstaculo
 class Nivel
 class Calle
@@ -42,6 +42,7 @@ Habilidad <|-- Velocidad
 
 
 Nivel "1" *-- "1" Calle
+Nivel "1" *-- "1" Sonido
 Calle "1" *-- "*" Buzon
 Calle "1" *-- "*" Alcantarilla
 Calle "1" *-- "*" Casa
