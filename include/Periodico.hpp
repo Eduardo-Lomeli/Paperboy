@@ -10,7 +10,7 @@ public:
 
     void respawn(float posX, float posY);
     void update(float velocidadPeriodico);
-    void draw(sf::RenderTarget& target) const;
+    void draw(sf::RenderTarget &target) const;
     sf::FloatRect getBounds() const;
     bool isOutOfBounds(float altoVentana) const;
 

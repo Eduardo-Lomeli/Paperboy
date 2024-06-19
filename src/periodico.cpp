@@ -20,7 +20,7 @@ void Periodico::update(float velocidadPeriodico)
     _sprite.move(0, velocidadPeriodico);
 }
 
-void Periodico::draw(sf::RenderTarget& target) const
+void Periodico::draw(sf::RenderTarget &target) const
 {
     target.draw(_sprite);
 }

@@ -20,7 +20,7 @@ public:
     void actualizarInvulnerabilidad(float dt);
 
 private:
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
     sf::Texture _textura;
     sf::Sprite _sprite;
@@ -39,9 +39,8 @@ private:
     int frameHeight;
     sf::Clock _clock;
 
-    
     bool _invulnerable = false;
-    float _tiempoInvulnerabilidad = 0.0f; 
+    float _tiempoInvulnerabilidad = 0.0f;
 
     const int anchoVentana = 800;
     const int altoVentana = 600;
@@ -50,10 +49,10 @@ private:
 
     Periodico _periodico; // Agregar la instancia de Periodico como miembro de Paperboy
 
-    void spawnearObstaculos(); 
-    void spawnearPeriodico(); 
-    sf::Clock _periodicoClock; 
-    float _periodicoCooldown; 
+    void spawnearObstaculos();
+    void spawnearPeriodico();
+    sf::Clock _periodicoClock;
+    float _periodicoCooldown;
 };
 
 #endif // PAPERBOY_HPP

@@ -3,7 +3,7 @@
 
 int main(int argc, char const *argv[])
 {
-    //Carga la funcion Ventana
+    // Carga la funcion Ventana
     ventana();
     return 0;
 }

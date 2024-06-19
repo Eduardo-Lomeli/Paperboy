@@ -4,7 +4,8 @@ class Sonido
 {
 private:
     sf::SoundBuffer _musicaFondo;
-    sf::Sound _sonido; 
+    sf::Sound _sonido;
+
 public:
     Sonido() {}
     ~Sonido() {}
@@ -15,7 +16,6 @@ void Sonido::cargarMusicaFondo()
 {
     if (!_musicaFondo.loadFromFile("assets/music/MSCPAPER.ogg"))
     {
-        
     }
     _sonido.setBuffer(_musicaFondo);
     _sonido.play();
