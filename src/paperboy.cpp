@@ -1,6 +1,5 @@
 #include <SFML/Graphics.hpp>
 #include "../include/Paperboy.hpp"
-
 Paperboy::Paperboy(sf::Vector2f position)
 {
     _velocidad = 4;
@@ -164,4 +163,3 @@ void Paperboy::draw(sf::RenderTarget& target, sf::RenderStates states) const
     }
 }
 
-#endif // PAPERBOY_HPP
