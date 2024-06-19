@@ -10,14 +10,19 @@ class Paperboy : public sf::Drawable
 {
 public:
     Paperboy(sf::Vector2f position);
-
+    int _vidas;
+    const int _vidasIniciales = 3;
+    int _puntos;
+    const int _puntosIniciales = 0;
     void update();
     void animacion();
+    void verificarColisiones();
+    void actualizarInvulnerabilidad(float dt);
 
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    sf::Texture _texture;
+    sf::Texture _textura;
     sf::Sprite _sprite;
     sf::Texture _backgroundTexture;
     sf::Sprite _backgroundSprite;
@@ -34,17 +39,21 @@ private:
     int frameHeight;
     sf::Clock _clock;
 
-    const int windowWidth = 800;
-    const int windowHeight = 600;
+    
+    bool _invulnerable = false;
+    float _tiempoInvulnerabilidad = 0.0f; 
 
-    float _obstacleSpeed;
+    const int anchoVentana = 800;
+    const int altoVentana = 600;
+
+    float _velocidadObstaculo;
 
     Periodico _periodico; // Agregar la instancia de Periodico como miembro de Paperboy
 
-    void spawnObstacles(); // Método para spawnear obstáculos al inicio
-    void spawnPeriodico(); // Método para spawnear un periódico
-    sf::Clock _periodicoClock; // Reloj para controlar el tiempo de aparición del periódico
-    float _periodicoCooldown; // Tiempo de enfriamiento para el periódico
+    void spawnearObstaculos(); 
+    void spawnearPeriodico(); 
+    sf::Clock _periodicoClock; 
+    float _periodicoCooldown; 
 };
 
 #endif // PAPERBOY_HPP

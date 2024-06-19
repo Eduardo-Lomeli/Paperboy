@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "../include/Paperboy.hpp"
+#include "Juego.hpp"
 
 Paperboy::Paperboy(sf::Vector2f position)
     : _periodico()
@@ -10,68 +11,73 @@ Paperboy::Paperboy(sf::Vector2f position)
     numFrames = 9;
     frameWidth = 26;
     frameHeight = 40;
-    _obstacleSpeed = 2.0f;
+    _velocidadObstaculo = 2.0f;
 
-    if (!_texture.loadFromFile("assets/images/paperboy.png"))
+    if (!_textura.loadFromFile("assets/images/paperboy.png"))
     {
-        // Manejar error de carga
+        
     }
-    this->_sprite.setTexture(_texture);
+    this->_sprite.setTexture(_textura);
     this->_sprite.scale(4, 4);
     this->_sprite.setPosition(position);
 
     if (!_backgroundTexture.loadFromFile("assets/images/background.png"))
     {
-        // Manejar error de carga
+        
     }
     _backgroundSprite.setTexture(_backgroundTexture);
     _backgroundSprite2.setTexture(_backgroundTexture);
 
     // Ajustar el tamaño del fondo para que coincida con la ventana
-    float scaleX = static_cast<float>(windowWidth) / _backgroundTexture.getSize().x;
-    float scaleY = static_cast<float>(windowHeight) / _backgroundTexture.getSize().y;
+    float scaleX = static_cast<float>(anchoVentana) / _backgroundTexture.getSize().x;
+    float scaleY = static_cast<float>(altoVentana) / _backgroundTexture.getSize().y;
     
     _backgroundSprite.setScale(scaleX, scaleY);
     _backgroundSprite2.setScale(scaleX, scaleY);
 
     _backgroundSprite.setPosition(0, 0);
-    _backgroundSprite2.setPosition(0, -windowHeight);
+    _backgroundSprite2.setPosition(0, -altoVentana);
 
-    // Cargar texturas de obstáculos (ejemplo con dos texturas)
+    // Cargar texturas de obstáculos
     sf::Texture obstacleTexture1;
     if (!obstacleTexture1.loadFromFile("assets/images/obstacle1.png"))
     {
-        // Manejar error de carga
+        
     }
     _obstacleTextures.push_back(obstacleTexture1);
 
     sf::Texture obstacleTexture2;
     if (!obstacleTexture2.loadFromFile("assets/images/obstacle2.png"))
     {
-        // Manejar error de carga
+        
     }
     _obstacleTextures.push_back(obstacleTexture2);
 
-    // Crear sprites para los obstáculos y ajustar la escala
+    
     for (const auto& texture : _obstacleTextures)
     {
         sf::Sprite obstacleSprite;
         obstacleSprite.setTexture(texture);
         obstacleSprite.setScale(0.1f, 0.1f); // Ajustar la escala para que sea más pequeño
-        obstacleSprite.setPosition(static_cast<float>(rand() % (550 - 210 + 1) + 210), static_cast<float>(rand() % windowHeight));
+        obstacleSprite.setPosition(static_cast<float>(rand() % (550 - 210 + 1) + 210), static_cast<float>(rand() % altoVentana));
         _obstacleSprites.push_back(obstacleSprite);
     }
 
     // Inicializar el reloj del periódico y el tiempo de enfriamiento
-    _periodicoCooldown = 5.0f; // 5 segundos de enfriamiento inicial
+    _periodicoCooldown = 3.0f; 
     _periodicoClock.restart();
 
-    // Spawnear obstáculos al inicio
-    spawnObstacles();
+    spawnearObstaculos();
 
-    // Spawnear un periódico al inicio
-    spawnPeriodico();
+    spawnearPeriodico();
+
+    //Inicializar vidas
+    _vidas = _vidasIniciales;
+    _puntos = _puntosIniciales;
+    _tiempoInvulnerabilidad;
 }
+
+
 
 void Paperboy::update()
 {
@@ -106,33 +112,33 @@ void Paperboy::update()
     {
         _sprite.setPosition(600 - _sprite.getGlobalBounds().width, _sprite.getPosition().y);
     }
-    if (_sprite.getPosition().y + _sprite.getGlobalBounds().height > windowHeight)
+    if (_sprite.getPosition().y + _sprite.getGlobalBounds().height > altoVentana)
     {
-        _sprite.setPosition(_sprite.getPosition().x, windowHeight - _sprite.getGlobalBounds().height);
+        _sprite.setPosition(_sprite.getPosition().x, altoVentana - _sprite.getGlobalBounds().height);
     }
 
     // Movimiento del fondo
-    float backgroundSpeed = 2.0f; // Velocidad del fondo
-    _backgroundSprite.move(0, backgroundSpeed);
-    _backgroundSprite2.move(0, backgroundSpeed);
+    float backgroundvelocidadPeriodico = 2.0f; // Velocidad del fondo
+    _backgroundSprite.move(0, backgroundvelocidadPeriodico);
+    _backgroundSprite2.move(0, backgroundvelocidadPeriodico);
 
     // Reaparecer el fondo cuando salga de la pantalla
-    if (_backgroundSprite.getPosition().y >= windowHeight)
+    if (_backgroundSprite.getPosition().y >= altoVentana)
     {
-        _backgroundSprite.setPosition(0, -windowHeight);
+        _backgroundSprite.setPosition(0, -altoVentana);
     }
-    if (_backgroundSprite2.getPosition().y >= windowHeight)
+    if (_backgroundSprite2.getPosition().y >= altoVentana)
     {
-        _backgroundSprite2.setPosition(0, -windowHeight);
+        _backgroundSprite2.setPosition(0, -altoVentana);
     }
 
     // Movimiento de los obstáculos
     for (auto& obstacleSprite : _obstacleSprites)
     {
-        obstacleSprite.move(0, _obstacleSpeed);
+        obstacleSprite.move(0, _velocidadObstaculo);
 
         // Reaparecer el obstáculo cuando salga de la pantalla
-        if (obstacleSprite.getPosition().y >= windowHeight)
+        if (obstacleSprite.getPosition().y >= altoVentana)
         {
             obstacleSprite.setPosition(static_cast<float>(rand() % (550 - 210 + 1) + 210), 0);
         }
@@ -142,16 +148,17 @@ void Paperboy::update()
     float elapsedTime = _periodicoClock.getElapsedTime().asSeconds();
     if (elapsedTime >= _periodicoCooldown)
     {
-        _periodico.update(_obstacleSpeed);
+        _periodico.update(_velocidadObstaculo);
 
-        // Si el periódico se sale de la pantalla, reubicarlo aleatoriamente y reiniciar el tiempo de aparición
-        if (_periodico.isOutOfBounds(windowHeight))
+        // Si el periódico se sale de la pantalla, reubicarlo aleatoriamente
+        if (_periodico.isOutOfBounds(altoVentana))
         {
             _periodico.respawn(static_cast<float>(rand() % (550 - 210 + 1) + 210), 0);
             _periodicoClock.restart();
-            _periodicoCooldown = 5.0f; // Reiniciar el tiempo de enfriamiento del periódico
+            _periodicoCooldown = 3.0f; // Reiniciar el tiempo de enfriamiento del periódico
         }
     }
+        verificarColisiones();
 }
 
 void Paperboy::animacion()
@@ -180,7 +187,7 @@ void Paperboy::draw(sf::RenderTarget& target, sf::RenderStates states) const
     _periodico.draw(target);
 }
 
-void Paperboy::spawnObstacles()
+void Paperboy::spawnearObstaculos()
 {
     // Spawnear obstáculos en posiciones aleatorias dentro del área jugable
     _obstacleSprites.clear(); // Limpiar los obstáculos existentes
@@ -190,15 +197,73 @@ void Paperboy::spawnObstacles()
         sf::Sprite obstacleSprite;
         obstacleSprite.setTexture(texture);
         obstacleSprite.setScale(0.1f, 0.1f); // Ajustar la escala para que sea más pequeño
-        obstacleSprite.setPosition(static_cast<float>(rand() % (550 - 210 + 1) + 210), static_cast<float>(rand() % windowHeight));
+        obstacleSprite.setPosition(static_cast<float>(rand() % (550 - 210 + 1) + 210), static_cast<float>(rand() % altoVentana));
         _obstacleSprites.push_back(obstacleSprite);
     }
 }
 
-void Paperboy::spawnPeriodico()
+void Paperboy::spawnearPeriodico()
 {
     // Spawnear el periódico en una posición aleatoria al inicio
-    _periodico.respawn(static_cast<float>(rand() % (550 - 210 + 1) + 210), static_cast<float>(rand() % windowHeight));
+    _periodico.respawn(static_cast<float>(rand() % (550 - 210 + 1) + 210), static_cast<float>(rand() % altoVentana));
     _periodicoClock.restart();
-    _periodicoCooldown = 5.0f; // Ajustar el tiempo de aparición del periódico
+    _periodicoCooldown = 3.0f; // Ajustar el tiempo de aparición del periódico
+}
+
+
+void Paperboy::verificarColisiones()
+{
+    // Obtener el rectángulo de colisión del jugador
+    if (_invulnerable) return;
+    
+
+    sf::FloatRect playerBounds = _sprite.getGlobalBounds();
+
+    // Verificar colisiones con los obstáculos
+    for (auto& obstacleSprite : _obstacleSprites)
+    {
+        sf::FloatRect obstacleBounds = obstacleSprite.getGlobalBounds();
+
+        if (playerBounds.intersects(obstacleBounds))
+        {
+            // Colisión detectada, restar una vida y reubicar al jugador
+            _vidas -= 1;
+            _sprite.setPosition(400, 300);
+            _invulnerable = true;
+            _tiempoInvulnerabilidad = 1.5f;
+            // Si el jugador se queda sin vidas cambia el estado del Juego y reincia los contadores
+            if (_vidas <= 0)
+            {
+                estado = GameOver;
+                _vidas = _vidasIniciales;
+                _puntos = _puntosIniciales;
+            }
+                
+        }
+    }
+
+    // Verificar colisión con el periódico
+    sf::FloatRect periodicoBounds = _periodico.getBounds();
+
+    if (playerBounds.intersects(periodicoBounds))
+    {
+        // Colisión con el periódico, incrementar la velocidad de los obstáculos
+        _puntos += 10;
+        _velocidadObstaculo += 0.5f;
+        _periodico.respawn(static_cast<float>(rand() % (550 - 210 + 1) + 210), 0); // Reubicar el periódico
+        _periodicoClock.restart(); // Reiniciar el reloj del periódico
+
+    }
+}
+void Paperboy::actualizarInvulnerabilidad(float deltaTime)  //Funcion para actualizar el tiempo de invulnerabilidad
+{
+    if (_invulnerable)
+    {
+        _tiempoInvulnerabilidad -= deltaTime;
+        if (_tiempoInvulnerabilidad <= 0)
+        {
+            _invulnerable = false;
+            _tiempoInvulnerabilidad = 0.0f;
+        }
+    }
 }

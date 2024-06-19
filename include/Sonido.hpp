@@ -1,4 +1,4 @@
-#include <SFML/Audio.hpp>
+#include <SFML/Audio.hpp> //Libreria de audio de SFML
 
 class Sonido
 {

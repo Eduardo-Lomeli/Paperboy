@@ -22,7 +22,9 @@ en caso de tener problemas ejecutar las siguientes instrucciones en consola
 
 Video demostrativo en caso de no visualizar instalar la extension:
 
+El video contiene audio por lo que si no se logra escuchar ir al link:
 
+[Enlace video](https://youtu.be/m9prUdY5cVY)
 
 >MPEG-4 Preview
 
