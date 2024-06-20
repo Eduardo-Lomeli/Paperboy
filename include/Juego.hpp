@@ -45,7 +45,7 @@ void Juego::Ventana()
         if (estado == Jugando)
         {
             window.clear(sf::Color::Red);
-            paperboy.actualizarInvulnerabilidad(deltaTime);
+            paperboy.ActualizarInvulnerabilidad(deltaTime);
             paperboy.Update();
             paperboy.Animacion();
 
