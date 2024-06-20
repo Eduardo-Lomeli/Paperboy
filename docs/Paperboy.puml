@@ -1,7 +1,8 @@
 @startuml Paperboy
 
 class Jugador
-enum Juego
+class Juego
+enum EstadoJuego
 
 class Paperboy
 class Habilidad

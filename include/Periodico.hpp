@@ -8,9 +8,9 @@ class Periodico
 public:
     Periodico();
 
-    void respawn(float posX, float posY);
-    void update(float velocidadPeriodico);
-    void draw(sf::RenderTarget &target) const;
+    void Respawn(float posX, float posY);
+    void Update(float velocidadPeriodico);
+    void Draw(sf::RenderTarget &target) const;
     sf::FloatRect getBounds() const;
     bool isOutOfBounds(float altoVentana) const;
 

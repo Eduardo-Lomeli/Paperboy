@@ -10,17 +10,17 @@ Periodico::Periodico()
     _sprite.setScale(0.1f, 0.1f); // Ajustar la escala para que sea más pequeño
 }
 
-void Periodico::respawn(float posX, float posY)
+void Periodico::Respawn(float posX, float posY)
 {
     _sprite.setPosition(posX, posY);
 }
 
-void Periodico::update(float velocidadPeriodico)
+void Periodico::Update(float velocidadPeriodico)
 {
     _sprite.move(0, velocidadPeriodico);
 }
 
-void Periodico::draw(sf::RenderTarget &target) const
+void Periodico::Draw(sf::RenderTarget &target) const
 {
     target.draw(_sprite);
 }

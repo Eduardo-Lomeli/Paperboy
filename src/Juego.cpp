@@ -1,3 +1,3 @@
-#include "Juego.hpp"
+#include "EstadoJuego.hpp"
 
 EstadoJuego estado = Jugando; // definicion del estado del juego

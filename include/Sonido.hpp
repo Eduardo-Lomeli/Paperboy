@@ -9,10 +9,10 @@ private:
 public:
     Sonido() {}
     ~Sonido() {}
-    void cargarMusicaFondo();
+    void CargarMusicaFondo();
 };
 
-void Sonido::cargarMusicaFondo()
+void Sonido::CargarMusicaFondo()
 {
     if (!_musicaFondo.loadFromFile("assets/music/MSCPAPER.ogg"))
     {

@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "../include/Paperboy.hpp"
-#include "Juego.hpp"
+#include "EstadoJuego.hpp"
 
 Paperboy::Paperboy(sf::Vector2f position)
     : _periodico()
@@ -72,7 +72,7 @@ Paperboy::Paperboy(sf::Vector2f position)
     _tiempoInvulnerabilidad;
 }
 
-void Paperboy::update()
+void Paperboy::Update()
 {
     // Movimiento Paperboy
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
@@ -141,20 +141,20 @@ void Paperboy::update()
     float elapsedTime = _periodicoClock.getElapsedTime().asSeconds();
     if (elapsedTime >= _periodicoCooldown)
     {
-        _periodico.update(_velocidadObstaculo);
+        _periodico.Update(_velocidadObstaculo);
 
         // Si el periódico se sale de la pantalla, reubicarlo aleatoriamente
         if (_periodico.isOutOfBounds(altoVentana))
         {
-            _periodico.respawn(static_cast<float>(rand() % (550 - 210 + 1) + 210), 0);
+            _periodico.Respawn(static_cast<float>(rand() % (550 - 210 + 1) + 210), 0);
             _periodicoClock.restart();
             _periodicoCooldown = 3.0f; // Reiniciar el tiempo de enfriamiento del periódico
         }
     }
-    verificarColisiones();
+    VerificarColisiones();
 }
 
-void Paperboy::animacion()
+void Paperboy::Animacion()
 {
     if (_clock.getElapsedTime().asSeconds() >= frametime)
     {
@@ -177,7 +177,7 @@ void Paperboy::draw(sf::RenderTarget &target, sf::RenderStates states) const
     }
 
     // Dibujar el periódico
-    _periodico.draw(target);
+    _periodico.Draw(target);
 }
 
 void Paperboy::spawnearObstaculos()
@@ -198,12 +198,12 @@ void Paperboy::spawnearObstaculos()
 void Paperboy::spawnearPeriodico()
 {
     // Spawnear el periódico en una posición aleatoria al inicio
-    _periodico.respawn(static_cast<float>(rand() % (550 - 210 + 1) + 210), static_cast<float>(rand() % altoVentana));
+    _periodico.Respawn(static_cast<float>(rand() % (550 - 210 + 1) + 210), static_cast<float>(rand() % altoVentana));
     _periodicoClock.restart();
     _periodicoCooldown = 3.0f; // Ajustar el tiempo de aparición del periódico
 }
 
-void Paperboy::verificarColisiones()
+void Paperboy::VerificarColisiones()
 {
     // Obtener el rectángulo de colisión del jugador
     if (_invulnerable)
@@ -241,11 +241,11 @@ void Paperboy::verificarColisiones()
         // Colisión con el periódico, incrementar la velocidad de los obstáculos
         _puntos += 10;
         _velocidadObstaculo += 0.5f;
-        _periodico.respawn(static_cast<float>(rand() % (550 - 210 + 1) + 210), 0); // Reubicar el periódico
+        _periodico.Respawn(static_cast<float>(rand() % (550 - 210 + 1) + 210), 0); // Reubicar el periódico
         _periodicoClock.restart();                                                 // Reiniciar el reloj del periódico
     }
 }
-void Paperboy::actualizarInvulnerabilidad(float deltaTime) // Funcion para actualizar el tiempo de invulnerabilidad
+void Paperboy::ActualizarInvulnerabilidad(float deltaTime) // Funcion para actualizar el tiempo de invulnerabilidad
 {
     if (_invulnerable)
     {

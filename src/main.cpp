@@ -1,9 +1,10 @@
 #include <SFML/Graphics.hpp>
-#include "../include/Ventana.hpp"
+#include "../include/Juego.hpp"
 
 int main(int argc, char const *argv[])
 {
-    // Carga la funcion Ventana
-    ventana();
+    
+    Juego juego;
+    juego.Ventana();
     return 0;
 }

@@ -14,10 +14,10 @@ public:
     const int _vidasIniciales = 3;
     int _puntos;
     const int _puntosIniciales = 0;
-    void update();
-    void animacion();
-    void verificarColisiones();
-    void actualizarInvulnerabilidad(float dt);
+    void Update();
+    void Animacion();
+    void VerificarColisiones();
+    void ActualizarInvulnerabilidad(float dt);
 
 private:
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;

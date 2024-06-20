@@ -54,3 +54,9 @@ pacman -S mingw-w64-x86_64-box2d
 - C/C++
 - PlantUML
 - GitGraph
+
+## Capturas
+
+![alt text](image.png)
+
+![alt text](image-1.png)
