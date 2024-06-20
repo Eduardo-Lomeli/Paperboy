@@ -1,7 +1,7 @@
 @startuml Paperboy
 
 class Jugador
-class Juego
+enum Juego
 
 class Paperboy
 class Habilidad
@@ -10,7 +10,6 @@ class Lanzar
 class TocarObstaculo
 class Puntos
 class Vida
-class Muerte
 
 
 class Sonido
@@ -31,6 +30,8 @@ class Periodico
 Persona o-- Juego
 Juego "1" *-- "1" Jugador
 Jugador "1" o-- "1" Paperboy
+Jugador "1" *-- "*" Puntos
+Jugador "1" *-- "3" Vida
 Paperboy "1" *-- "*" Periodico
 Jugador "1" *-- "2" Habilidad
 Juego "1" *-- "*" Nivel
@@ -58,7 +59,42 @@ TocarObstaculo o-- Obstaculo
 Item <|-- Periodico
 Lanzar o-- Periodico
 
+class Paperboy
+{
+    -_Velocidad
+    -frametime
+    -currentFrame
+    -numFrames
+    -anchoFrame
+    -altoFrame
+    -_clock
+    -_invulnerable
+    -_tiempoInvulnerabilidad
+    -_textura
+    -_sprite
 
+    +update
+    +animacion
+    +verificarColisiones
+    +actualizarVulnerabilidad
+}
 
+class Sonido
+{
+    -_musicaFondo
+    -_sonido
 
+    +cargarMusicaFondo
+}
+class Periodico
+{
+    -_textura
+    -_sprite
+    -anchoVentana
+    -altoVentana
+
+    +respawn
+    +update
+    +draw
+}
 @enduml
